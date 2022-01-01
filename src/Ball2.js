@@ -8,13 +8,13 @@ import {
 } from 'react-native';
 
 const Ball2 = () => {
-  const position = useState(new Animated.Value(0))[0];
+  const leftValue = useState(new Animated.Value(0))[0];
 
   const moveBall = () => {
-    Animated.timing(position, {
+    Animated.timing(leftValue, {
       toValue: 100,
       duration: 1000,
-      useNativeDriver: false,
+      useNativeDriver: true,
     }).start();
   };
 
@@ -29,7 +29,7 @@ const Ball2 = () => {
       <Animated.View
         style={[
           {
-            marginLeft: position,
+            transform: [{ translateX: leftValue }],
           },
         ]}
       >
