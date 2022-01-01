@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Animated,
   StyleSheet,
@@ -10,22 +10,19 @@ import {
 const Ball = () => {
   const position = useState(new Animated.ValueXY(0, 0))[0];
 
-  const moveBall = () => {
+  useEffect(() => {
     Animated.spring(position, {
       toValue: { x: 250, y: 500 },
 
       useNativeDriver: false,
     }).start();
-  };
+  }, []);
 
   return (
     <>
       <Animated.View style={position.getLayout()}>
         <View style={styles.ball} />
       </Animated.View>
-      <TouchableOpacity onPress={moveBall}>
-        <Text>Press Me</Text>
-      </TouchableOpacity>
     </>
   );
 };
