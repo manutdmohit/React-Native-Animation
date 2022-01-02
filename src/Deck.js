@@ -8,7 +8,7 @@ import {
   Animated,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Card, Button, Image } from 'react-native-elements';
+import CardMain from './CardMain';
 
 import { data } from './data';
 
@@ -27,24 +27,23 @@ const Deck = () => {
 
   return (
     <SafeAreaView>
-      <Animated.View style={pan.getLayout()} {...panResponder.panHandlers}>
-        {
-          <FlatList
-            data={data}
-            keyExtractor={(item) => item.id}
-            renderItem={({ item }) => {
-              return (
-                <Card>
-                  <Card.Image source={{ uri: item.uri }}></Card.Image>
-                  <Card.Title>{item.text}</Card.Title>
-                  <Text style={{ marginBottom: 10 }}>This is customizable</Text>
-                  <Button icon={{ name: 'code' }} title="View Now" />
-                </Card>
-              );
-            }}
-          />
-        }
-      </Animated.View>
+      <FlatList
+        data={data}
+        keyExtractor={(item) => item.id}
+        renderItem={({ item, index }) => {
+          if (index === 0) {
+            return (
+              <Animated.View
+                style={pan.getLayout()}
+                {...panResponder.panHandlers}
+              >
+                <CardMain url={item.uri} text={item.text} />
+              </Animated.View>
+            );
+          }
+          return <CardMain url={item.uri} text={item.text} />;
+        }}
+      />
     </SafeAreaView>
   );
 };
