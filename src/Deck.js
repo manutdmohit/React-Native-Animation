@@ -13,35 +13,39 @@ import { Card, Button, Image } from 'react-native-elements';
 import { data } from './data';
 
 const Deck = () => {
-  const pan = useRef(new Animated.ValueXY()).current();
+  const pan = useRef(new Animated.ValueXY()).current;
 
   const panResponder = useRef(
     PanResponder.create({
       onStartShouldSetPanResponder: () => true,
-      onPanResponderMove: () => {},
+      onPanResponderMove: (event, gesture) => {
+        debugger;
+        console.log(gesture);
+      },
       onPanResponderRelease: () => {},
     })
   ).current;
 
   return (
     <SafeAreaView>
-      {
-        <FlatList
-          data={data}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item }) => {
-            return (
-              <Card>
-                <Card.Image source={{ uri: item.uri }}></Card.Image>
-                <Card.Title>{item.text}</Card.Title>
-                <Text style={{ marginBottom: 10 }}>This is customizable</Text>
-                <Button icon={{ name: 'code' }} title="View Now" />
-              </Card>
-            );
-          }}
-        />
-      }
-      {...panResponder.panHandlers}
+      <Animated.View {...panResponder.panHandlers}>
+        {
+          <FlatList
+            data={data}
+            keyExtractor={(item) => item.id}
+            renderItem={({ item }) => {
+              return (
+                <Card>
+                  <Card.Image source={{ uri: item.uri }}></Card.Image>
+                  <Card.Title>{item.text}</Card.Title>
+                  <Text style={{ marginBottom: 10 }}>This is customizable</Text>
+                  <Button icon={{ name: 'code' }} title="View Now" />
+                </Card>
+              );
+            }}
+          />
+        }
+      </Animated.View>
     </SafeAreaView>
   );
 };
