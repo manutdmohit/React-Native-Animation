@@ -18,17 +18,16 @@ const Deck = () => {
   const panResponder = useRef(
     PanResponder.create({
       onStartShouldSetPanResponder: () => true,
-      onPanResponderMove: (event, gesture) => {
-        debugger;
-        console.log(gesture);
-      },
+      onPanResponderMove: Animated.event([null, { dx: pan.x, dy: pan.y }], {
+        useNativeDriver: false,
+      }),
       onPanResponderRelease: () => {},
     })
   ).current;
 
   return (
     <SafeAreaView>
-      <Animated.View {...panResponder.panHandlers}>
+      <Animated.View style={pan.getLayout()} {...panResponder.panHandlers}>
         {
           <FlatList
             data={data}
