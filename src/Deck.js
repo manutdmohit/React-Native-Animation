@@ -22,13 +22,22 @@ const Deck = () => {
       onPanResponderMove: Animated.event([null, { dx: pan.x, dy: pan.y }], {
         useNativeDriver: false,
       }),
-      onPanResponderRelease: () => {},
+      onPanResponderRelease: () => {
+        resetPosition();
+      },
     })
   ).current;
 
+  function resetPosition() {
+    Animated.spring(pan, {
+      toValue: { x: 0, y: 0 },
+      useNativeDriver: false,
+    }).start();
+  }
+
   const getCardStyle = () => {
     const rotate = pan.x.interpolate({
-      inputRange: [-SCREEN_WIDTH * 2, 0, SCREEN_WIDTH * 2],
+      inputRange: [-SCREEN_WIDTH * 1.75, 0, SCREEN_WIDTH * 1.75],
       outputRange: ['-120deg', '0deg', '120deg'],
     });
 
