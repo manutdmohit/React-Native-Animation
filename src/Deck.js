@@ -1,16 +1,17 @@
 import React, { useRef } from 'react';
 import {
   StyleSheet,
-  Text,
-  View,
   FlatList,
   PanResponder,
   Animated,
+  Dimensions,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import CardMain from './CardMain';
 
 import { data } from './data';
+
+const SCREEN_WIDTH = Dimensions.get('window').width;
 
 const Deck = () => {
   const pan = useRef(new Animated.ValueXY()).current;
@@ -27,7 +28,7 @@ const Deck = () => {
 
   const getCardStyle = () => {
     const rotate = pan.x.interpolate({
-      inputRange: [-500, 0, 500],
+      inputRange: [-SCREEN_WIDTH * 2, 0, SCREEN_WIDTH * 2],
       outputRange: ['-120deg', '0deg', '120deg'],
     });
 
