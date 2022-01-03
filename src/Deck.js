@@ -6,12 +6,14 @@ import {
   Animated,
   Dimensions,
 } from 'react-native';
+
 import { SafeAreaView } from 'react-native-safe-area-context';
 import CardMain from './CardMain';
 
 import { data } from './data';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
+const SWIPE_THRESHOLD = 0.25 * SCREEN_WIDTH;
 
 const Deck = () => {
   const pan = useRef(new Animated.ValueXY()).current;
@@ -19,11 +21,17 @@ const Deck = () => {
   const panResponder = useRef(
     PanResponder.create({
       onStartShouldSetPanResponder: () => true,
-      onPanResponderMove: Animated.event([null, { dx: pan.x, dy: pan.y }], {
-        useNativeDriver: false,
-      }),
-      onPanResponderRelease: () => {
-        resetPosition();
+      onPanResponderMove: (event, gesture) => {
+        pan.setValue({ x: gesture.dx, y: gesture.dy });
+      },
+      onPanResponderRelease: (event, gesture) => {
+        if (gesture.dx > SWIPE_THRESHOLD) {
+          console.log('swipe right!');
+        } else if (gesture.dx < -SWIPE_THRESHOLD) {
+          console.log('swipe left!');
+        } else {
+          resetPosition();
+        }
       },
     })
   ).current;
