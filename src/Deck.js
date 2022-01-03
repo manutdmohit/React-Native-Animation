@@ -25,6 +25,13 @@ const Deck = () => {
     })
   ).current;
 
+  const getCardStyle = () => {
+    return {
+      ...pan.getLayout(),
+      transform: [{ rotate: '45deg' }],
+    };
+  };
+
   return (
     <SafeAreaView>
       <FlatList
@@ -34,7 +41,7 @@ const Deck = () => {
           if (index === 0) {
             return (
               <Animated.View
-                style={pan.getLayout()}
+                style={getCardStyle()}
                 {...panResponder.panHandlers}
               >
                 <CardMain url={item.uri} text={item.text} />
