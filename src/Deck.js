@@ -26,9 +26,14 @@ const Deck = () => {
   ).current;
 
   const getCardStyle = () => {
+    const rotate = pan.x.interpolate({
+      inputRange: [-500, 0, 500],
+      outputRange: ['-120deg', '0deg', '120deg'],
+    });
+
     return {
       ...pan.getLayout(),
-      transform: [{ rotate: '45deg' }],
+      transform: [{ rotate }],
     };
   };
 
