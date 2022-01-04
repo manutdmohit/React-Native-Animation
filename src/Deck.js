@@ -14,6 +14,7 @@ import { data } from './data';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SWIPE_THRESHOLD = 0.25 * SCREEN_WIDTH;
+const SWIPE_OUT_DURATION = 250;
 
 const Deck = () => {
   const pan = useRef(new Animated.ValueXY()).current;
@@ -26,7 +27,7 @@ const Deck = () => {
       },
       onPanResponderRelease: (event, gesture) => {
         if (gesture.dx > SWIPE_THRESHOLD) {
-          console.log('swipe right!');
+          forceSwipeRight();
         } else if (gesture.dx < -SWIPE_THRESHOLD) {
           console.log('swipe left!');
         } else {
@@ -35,6 +36,14 @@ const Deck = () => {
       },
     })
   ).current;
+
+  function forceSwipeRight() {
+    Animated.timing(pan, {
+      toValue: { x: SCREEN_WIDTH, y: 0 },
+      useNativeDriver: false,
+      duration: SWIPE_OUT_DURATION,
+    }).start();
+  }
 
   function resetPosition() {
     Animated.spring(pan, {
