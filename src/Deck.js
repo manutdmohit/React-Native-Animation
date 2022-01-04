@@ -27,9 +27,9 @@ const Deck = () => {
       },
       onPanResponderRelease: (event, gesture) => {
         if (gesture.dx > SWIPE_THRESHOLD) {
-          forceSwipeRight();
+          forceSwipe('right');
         } else if (gesture.dx < -SWIPE_THRESHOLD) {
-          console.log('swipe left!');
+          forceSwipe('left');
         } else {
           resetPosition();
         }
@@ -37,9 +37,11 @@ const Deck = () => {
     })
   ).current;
 
-  function forceSwipeRight() {
+  function forceSwipe(direction) {
+    const x = direction === 'right' ? SCREEN_WIDTH : -SCREEN_WIDTH;
+
     Animated.timing(pan, {
-      toValue: { x: SCREEN_WIDTH, y: 0 },
+      toValue: { x, y: 0 },
       useNativeDriver: false,
       duration: SWIPE_OUT_DURATION,
     }).start();
