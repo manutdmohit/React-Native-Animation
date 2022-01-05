@@ -44,7 +44,11 @@ const Deck = () => {
       toValue: { x, y: 0 },
       useNativeDriver: false,
       duration: SWIPE_OUT_DURATION,
-    }).start();
+    }).start(() => onSwipeComplete(direction), { onSWipeleft, onSWipeRight });
+  }
+
+  function onSwipeComplete(direction, { onSWipeleft, onSWipeRight }) {
+    direction === 'right' ? onSWipeRight() : onSWipeleft();
   }
 
   function resetPosition() {
