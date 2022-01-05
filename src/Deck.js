@@ -40,15 +40,23 @@ const Deck = () => {
   function forceSwipe(direction) {
     const x = direction === 'right' ? SCREEN_WIDTH : -SCREEN_WIDTH;
 
+    function onSwipeLeft() {
+      console.log('left');
+    }
+
+    function onSwipeRight() {
+      console.log('right');
+    }
+
     Animated.timing(pan, {
       toValue: { x, y: 0 },
       useNativeDriver: false,
       duration: SWIPE_OUT_DURATION,
-    }).start(() => onSwipeComplete(direction), { onSWipeleft, onSWipeRight });
+    }).start(() => onSwipeComplete(direction, { onSwipeLeft, onSwipeRight }));
   }
 
-  function onSwipeComplete(direction, { onSWipeleft, onSWipeRight }) {
-    direction === 'right' ? onSWipeRight() : onSWipeleft();
+  function onSwipeComplete(direction, { onSwipeLeft, onSwipeRight }) {
+    direction === 'right' ? onSwipeRight() : onSwipeL eft();
   }
 
   function resetPosition() {
