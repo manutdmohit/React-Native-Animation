@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import {
   StyleSheet,
   FlatList,
@@ -19,6 +19,8 @@ const SWIPE_OUT_DURATION = 250;
 const Deck = ({ onSwipeLeft, onSwipeRight }) => {
   const pan = useRef(new Animated.ValueXY()).current;
 
+  const [index, setIndex] = useState(0);
+
   const panResponder = useRef(
     PanResponder.create({
       onStartShouldSetPanResponder: () => true,
@@ -37,8 +39,6 @@ const Deck = ({ onSwipeLeft, onSwipeRight }) => {
     })
   ).current;
 
-  const index = useRef().current;
-
   function forceSwipe(direction) {
     const x = direction === 'right' ? SCREEN_WIDTH : -SCREEN_WIDTH;
 
@@ -51,7 +51,12 @@ const Deck = ({ onSwipeLeft, onSwipeRight }) => {
 
   function onSwipeComplete(direction) {
     const item = data[index];
+
     direction === 'right' ? onSwipeRight(item) : onSwipeLeft(item);
+
+    pan.setValue({ x: 0, y: 0 });
+
+    setIndex(index + 1);
   }
 
   function resetPosition() {
