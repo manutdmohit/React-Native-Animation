@@ -16,7 +16,7 @@ const SCREEN_WIDTH = Dimensions.get('window').width;
 const SWIPE_THRESHOLD = 0.25 * SCREEN_WIDTH;
 const SWIPE_OUT_DURATION = 250;
 
-const Deck = () => {
+const Deck = ({ onSwipeLeft, onSwipeRight }) => {
   const pan = useRef(new Animated.ValueXY()).current;
 
   const panResponder = useRef(
@@ -37,26 +37,21 @@ const Deck = () => {
     })
   ).current;
 
+  const index = useRef().current;
+
   function forceSwipe(direction) {
     const x = direction === 'right' ? SCREEN_WIDTH : -SCREEN_WIDTH;
-
-    function onSwipeLeft() {
-      console.log('left');
-    }
-
-    function onSwipeRight() {
-      console.log('right');
-    }
 
     Animated.timing(pan, {
       toValue: { x, y: 0 },
       useNativeDriver: false,
       duration: SWIPE_OUT_DURATION,
-    }).start(() => onSwipeComplete(direction, { onSwipeLeft, onSwipeRight }));
+    }).start(() => onSwipeComplete(direction));
   }
 
-  function onSwipeComplete(direction, { onSwipeLeft, onSwipeRight }) {
-    direction === 'right' ? onSwipeRight() : onSwipeL eft();
+  function onSwipeComplete(direction) {
+    const item = data[index];
+    direction === 'right' ? onSwipeRight(item) : onSwipeLeft(item);
   }
 
   function resetPosition() {
@@ -99,6 +94,15 @@ const Deck = () => {
       />
     </SafeAreaView>
   );
+};
+
+Deck.defaultProps = {
+  onSwipeRight: () => {
+    console.log('right');
+  },
+  onSwipeLeft: () => {
+    console.log('left');
+  },
 };
 
 export default Deck;
